@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div>
+	<h3 class="mb-4 border-bottom pb-1">
+				Products Detail
+			</h3>
+  <h1>{{ product.name }}</h1>
+  <td><img src="{{ product.image.url }}" width="120"/></td>
+  <p>Price: ${{ product.price }}</p>
+  <p>Stock: {{ product.stock }}</p>
+  <form action="{% url 'add_to_cart' product.id %}" method="post">
+    {% csrf_token %}
+    <button type="submit" {% if product.stock <= 0 %}disabled{% endif %}>
+      {% if product.stock <= 0 %}Out of Stock{% else %}Add to Cart{% endif %}
+    </button>
+  </form>
+  {% if messages %}
+        {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+{% endblock %}
